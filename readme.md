@@ -5,7 +5,6 @@
 <br>
 
 # User authentication
-<hr>
 
 #### users/register/
 paylaod
@@ -103,7 +102,6 @@ response
 <br>
 
 # Product 
-<hr>
 
 #### products/add/
 paylaod  
