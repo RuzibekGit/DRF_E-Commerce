@@ -5,8 +5,9 @@
 
 ### User authentication
 ``` json
-users/register/
-		paylaod = {
+// users/register/
+		// paylaod  
+    {
 			"first_name": "",
 			"last_name": "",
 			"username": "",
@@ -15,61 +16,70 @@ users/register/
 			"confirm_password": ""
 		}
 		
-		response = {
+		// response  
+    {
 			"status": True,
 			"message": "Successfully registered, code sent to you email",
 			"access_token": "token",
 			"auth_status": "NEW"
 		}
--------------------------------------------------------------------------------
-users/verify/
-		paylaod = {
+// -------------------------------------------------------------------------------
+// users/verify/
+		// paylaod 
+    {
 			"code": ""
 		}
 		
-		response = {
+		// response  
+    {
 			"status": True,
 			"access_token": "token",
 			"auth_status": "VERIFIED"
 		}
--------------------------------------------------------------------------------
-users/login/
-		paylaod = {
+// -------------------------------------------------------------------------------
+// users/login/
+		// paylaod
+     {
 			"username": "",
 			"password": ""
 		}
-		response = {
+		// response 
+    {
 			"status": True,
 			"access_token": "token",
 			"refresh_token": "token"
 		}
--------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 
-users/resend/code/
-		response = {
+// users/resend/code/
+		// response  
+    {
 			"status": True,
 			"message": "Code send successfully",
 			"auth_status": "NEW"
 		}
 
 
--------------------------------------------------------------------------------
-users/password/forget/
-		paylaod = {
+// -------------------------------------------------------------------------------
+// users/password/forget/
+		// paylaod 
+    {
 			"email": ""
 		}
-		response = {
+		// response  
+    {
 			"status": True,
 			"message": "Code send to email"
 		}
 
--------------------------------------------------------------------------------
-users/password/update/
-		paylaod = {
+// -------------------------------------------------------------------------------
+// users/password/update/
+		// paylaod 
+    {
 			"password": "",
 			"conform_password": ""
 		}
-		response = {
+		// response {
 			"status": True,
 			"message": "Password changed"
 		}
@@ -77,31 +87,35 @@ users/password/update/
 
 ### Product 
 ``` json
-products/add/
-		paylaod = {
+// products/add/
+		// paylaod  
+    {
 			"name": "",
 			"price": "",
 			"photo": "",
 			"decription": "",
 			"quantity": ""
 		}
-		response = {
+		// response  
+    {
 			"status": True,
 			"message": "added",
 			"data": {
 					"product details"
 			}
 		}
--------------------------------------------------------------------------------
-products/update/ -> put and patch
-		paylaod = {
+// -------------------------------------------------------------------------------
+// products/update/ -> put and patch
+// 		paylaod 
+    {
 			"name": "",
 			"price": "",
 			"photo": "",
 			"decription": "",
 			"quantity": ""
 		}
-		response = {
+		// response  
+    {
 			"status": True,
 			"message": "Updated",
 			"data": {
@@ -109,15 +123,17 @@ products/update/ -> put and patch
 			}
 		}
 	
-	-------------------------------------------------------------------------------
-	products/<int:pk/>delete/
-		response = {
+	// -------------------------------------------------------------------------------
+	// products/<int:pk/>delete/
+		// response  
+    {
 			"status": True,
 			"message": "Deleted"
 		}
-	-----------------------------------------------------------------------------
-		products/<int:pk/>detail/
-			response = {
+	// -----------------------------------------------------------------------------
+		// products/<int:pk/>detail/
+			// response  
+      {
 				"id": "",
 				"name": "",
 				"price": "",
