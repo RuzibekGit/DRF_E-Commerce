@@ -1,9 +1,11 @@
 
 
-## This project has not been completed yet...
+<p style="font-size: 20px; color: rgb(131, 130, 128);">This project has not been completed yet...</p>
 
+<br>
 
-### User authentication
+# User authentication
+<hr>
 
 #### users/register/
 paylaod
@@ -98,8 +100,11 @@ response
 	"message": "Password changed"
 }
 ```
+<br>
 
-### Product 
+# Product 
+<hr>
+
 #### products/add/
 paylaod  
 ``` json
