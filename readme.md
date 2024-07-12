@@ -4,26 +4,31 @@
 
 
 ### User authentication
+##### users/register/
 ``` json
-// users/register/
-		// paylaod  
-    {
-			"first_name": "",
-			"last_name": "",
-			"username": "",
-			"email": "",
-			"password": "",
-			"confirm_password": ""
-		}
+//  
+{
+  "paylaod": {
+
+		"first_name": "",
+		"last_name": "",
+		"username": "",
+		"email": "",
+		"password": "",
+		"confirm_password": ""
+	},
 		
-		// response  
-    {
-			"status": True,
-			"message": "Successfully registered, code sent to you email",
-			"access_token": "token",
-			"auth_status": "NEW"
-		}
-// -------------------------------------------------------------------------------
+  "response": {  
+    
+		"status": True,
+		"message": "Successfully registered, code sent to you email",
+		"access_token": "token",
+		"auth_status": "NEW"
+	}
+}
+```
+
+``` json
 // users/verify/
 		// paylaod 
     {
