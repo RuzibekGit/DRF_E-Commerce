@@ -55,11 +55,11 @@ paylaod
 ```
 response
 ```json 
-    {
-			"status": True,
-			"access_token": "token",
-			"refresh_token": "token"
-		}
+{
+	"status": True,
+	"access_token": "token",
+	"refresh_token": "token"
+}
 ```
 #### users/resend/code/
 response 
