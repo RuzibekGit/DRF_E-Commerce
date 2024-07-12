@@ -14,7 +14,7 @@ from shared.models import BaseModel
 
 
 ORDINARY_USER, MANAGER, ADMIN = "ORDINARY_USER", "MANAGER", "ADMIN"
-CODE_VERIFIED, DONE  = "CODE_VERIFIED", "DONE",
+CODE_VERIFIED, DONE  = "VERIFIED", "DONE",
 NEW,  PHOTO = "NEW", "PHOTO"
 
 
@@ -43,8 +43,7 @@ class UserModel(AbstractUser, BaseModel):
     avatar       = models.ImageField(null=True, blank=True, upload_to='avatars')
     bio          = models.TextField (null=True, blank=True)
 
-    # groups = models.ManyToManyField(Group, related_name="custom_user_groups")
-    # user_permissions = models.ManyToManyField(Permission, related_name="custom_user_permissions")
+   
 
     # --------------- Functions -----------------
     def __str__(self): return self.get_full_name()
@@ -91,13 +90,13 @@ class UserModel(AbstractUser, BaseModel):
         super(UserModel, self).save(*args, **kwargs)
 
     # ------------------------------
-    def create_verify_code(self, verify_type):
+    def create_verify_code(self):
         code = ''.join([str(random.randint(1, 100)%10) for _ in range(4)])
 
         ConfirmationModel.objects.create(
             code=code,
-            user=self,
-            verify_type=verify_type
+            user=self, 
+            expiration_time= timezone.now() + timedelta(minutes=4)
         )
         return code
     
@@ -123,9 +122,8 @@ class ConfirmationModel(BaseModel):
     is_confirmed    = models.BooleanField(default=False)
     code            = models.CharField(max_length=8, null=True)
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.expiration_time = timezone.now() + timedelta(minutes=4)
+    def __str__(self): return self.code
+
 
 
 # endregion
