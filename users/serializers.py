@@ -7,10 +7,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 import re
 import dns.resolver
-from validate_email import validate_email
 
 from shared.utils import send_code_to_email
-from users.models import UserModel, PHOTO, DONE
+from users.models import UserModel, PHOTO, NEW, DONE, CODE_VERIFIED
 
 
 
@@ -19,7 +18,7 @@ def is_valid_email(email):
     return re.match(pattern, email) is not None
 
 
-def return_error(message):
+def raise_error(message="Validation error!"):
     response = {
         "success": False,
         "message": message
@@ -51,7 +50,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         user = super(SignUpSerializer, self).create(validated_data)
         code = user.create_verify_code()
 
-        send_code_to_email(user.email, code)
+        send_code_to_email(user.email, code, name=user.first_name)
       
         user.save()
         return user
@@ -71,7 +70,7 @@ class SignUpSerializer(serializers.ModelSerializer):
                 self.validation_error[check[2]] = f"{check[0]} is not a valid, please use only letters."
         
         if self.validation_error:
-            return_error(self.validation_error)
+            raise_error(self.validation_error)
         
         data.pop('confirm_password')
         return data
@@ -142,7 +141,7 @@ class LoginSerializer(TokenObtainPairSerializer):
             user = UserModel.objects.filter(username=userinput).first()
 
         if user is None:
-            return_error("Invalid username or password")
+            raise_error("Invalid username or password")
 
         auth_user = authenticate(
             username=user.username, 
@@ -150,7 +149,7 @@ class LoginSerializer(TokenObtainPairSerializer):
         )
         
         if auth_user is None:
-            return_error("Invalid username or password")
+            raise_error("Invalid username or password")
 
         response = {
             "success": True,
@@ -175,16 +174,15 @@ class ForgetPasswordSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         email = attrs.get('email')
-        response = {"success": False}
+        user = UserModel.objects.filter(email=email)
+        
         if not email:
-            response = {"message": "Email or phone number is required"}
-            raise serializers.ValidationError(response)
+            raise_error("Email is required")
 
-        user = UserModel.objects.filter(
-            Q(email=email) | Q(phone_number=email))
         if not user.exists():
-            response["message"] = "User not found"
-            raise serializers.ValidationError(response)
+            raise_error("User not found")
+        elif UserModel.objects.filter(email=email, auth_status=NEW).exists():
+            raise_error(message="The user’s verification is still pending.")
 
         attrs["user"] = user.first()
         return attrs
@@ -197,51 +195,41 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(write_only=True, required=True)
     last_name = serializers.CharField(write_only=True, required=True)
     username = serializers.CharField(write_only=True, required=True)
-    password = serializers.CharField(write_only=True, required=True)
-    confirm_password = serializers.CharField(write_only=True, required=True)
+
 
     class Meta:
         model = UserModel
-        fields = ['first_name', 'last_name',
-                  'username', 'password', 'confirm_password']
+        fields = ['first_name', 'last_name', 'username']
+
 
     # ------------------------------
-    def validate(self, attrs):
-        password = attrs.get('password')
-        confirm_password = attrs.get('confirm_password')
+    def validate(self, data):
+        validation_error = dict()
 
-        if password != confirm_password:
-            response = {
-                "success": False,
-                "message": "Passwords don't match"
-            }
-            raise serializers.ValidationError(response)
+        fullname = []
+        if (name := data.get('first_name')) and not name.isalpha():
+            validation_error["first_name"] = f"First name is not a valid, please use only letters."
 
-        return attrs
+        if (last := data.get('last_name')) and not last.isalpha():
+            validation_error["last_name"] = f"Last name is not a valid, please use only letters."
 
-    # ------------------------------
-    def validate_username(self, username):
-        if UserModel.objects.filter(username=username).exists():
-            response = {
-                "success": False,
-                "message": "Username already exists"
-            }
-            raise serializers.ValidationError(response)
-        return username
+        if (user := data.get("username")) and UserModel.objects.filter(username=user).exists():
+            validation_error["username"] = "Username already exists"
 
+        
+        if validation_error:
+            raise_error(validation_error)
+
+        return data
+
+    
     # ------------------------------
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
-        instance.first_name = validated_data.get(
-            'first_name', instance.first_name)
-        instance.last_name = validated_data.get(
-            'last_name', instance.last_name)
-        instance.password = validated_data.get('password', instance.password)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.save()
 
-        if validated_data.get('password'):
-            instance.set_password(validated_data.get('password'))
-            instance.auth_status = DONE
-            instance.save()
         return instance
 # endregion
 
@@ -261,3 +249,32 @@ class UpdateAvatarSerializer(serializers.Serializer):
             instance.save()
         return instance
 # endregion
+
+
+
+
+
+
+
+
+
+class UserListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserModel
+        fields = ['id', 'first_name', 'last_name',
+                  'username', 'email', 'auth_status', 'user_role']
+        
+
+class AboutUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserModel
+        fields = ['id', 'first_name', 'last_name',
+                  'username', 'email', 'phone_number', 'bio', 'created_at', 'updated_at', 'last_login',  'auth_status', 'user_role']
+
+
+
+    
+
+   

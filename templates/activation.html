@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activation Code</title>
+    <style>
+        .main {
+            margin: 10px;
+            border: 1px solid rgb(62, 62, 62);
+        display: grid;
+        place-items: center; /* Centers both horizontally and vertically */
+        height: 40vh; /* Full viewport height */
+        }
+        .center {
+        margin: 0 auto;
+        width: 50%; 
+        }
+        #code {
+            margin: 20px 0;
+            height: 40px;
+            width: 50%;
+            background-color: rgba(93, 2, 2, 0.616);
+            
+        }
+        #code-p {
+            line-height: 40px;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="center">
+            <h1>Hello, {{ name }}!..</h1>
+            <p>Your activation code is: </p>
+            <div id="code">
+                <p id="code-p">{{ code }}</st>
+            </div>
+            <p>Do not forward this email to anyone. </p>
+
+        </div>
+    </div>
+</body>
+</html>
