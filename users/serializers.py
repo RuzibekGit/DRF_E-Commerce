@@ -254,27 +254,4 @@ class UpdateAvatarSerializer(serializers.Serializer):
 
 
 
-
-
-
-
-class UserListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = UserModel
-        fields = ['id', 'first_name', 'last_name',
-                  'username', 'email', 'auth_status', 'user_role']
-        
-
-class AboutUserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = UserModel
-        fields = ['id', 'first_name', 'last_name',
-                  'username', 'email', 'phone_number', 'bio', 'created_at', 'updated_at', 'last_login',  'auth_status', 'user_role']
-
-
-
-    
-
    

@@ -10,13 +10,9 @@ from shared.utils import send_code_to_email
 from users.models import UserModel, ConfirmationModel, CODE_VERIFIED, ADMIN
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from users.serializers import (SignUpSerializer,
-                               LoginSerializer,
-                               LogoutSerializer,
-                               ForgetPasswordSerializer,
-                               UpdateUserSerializer,
-                               UserListSerializer,
+from admin.serializers import (UserListSerializer,
                                AboutUserSerializer)
+
 from shared.pagination import CustomPagination
 
 
@@ -24,7 +20,6 @@ class AdminListView(generics.ListAPIView):
     serializer_class = UserListSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
-
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
@@ -39,5 +34,6 @@ class AdminListView(generics.ListAPIView):
     def get_queryset(self):
         if pk := self.kwargs.get('pk'):
             self.serializer_class = AboutUserSerializer
+            self.pagination_class = None
             return UserModel.objects.filter(id=pk)
         return UserModel.objects.all()

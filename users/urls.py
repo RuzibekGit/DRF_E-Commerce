@@ -7,7 +7,6 @@ from users.views import (SignUpCreateAPIView,
                          ForgetPasswordView,
                          UserUpdateAPIView)
 
-from users.views_admin import AdminListView
 
 app_name = 'users'
 
