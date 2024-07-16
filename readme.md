@@ -5,8 +5,8 @@
 
 <br>
 
-# User authentication
-This repository contains the implementation of a user management system with various endpoints for user registration, verification, login, password management, and profile updates.
+# DRF E-Commerce
+This repository contains a comprehensive e-commerce application built using Django Rest Framework (DRF). The project includes various features essential for an online store, such as user management, product management, cart functionality, and order processing.
 
 #### users/register/
 paylaod
