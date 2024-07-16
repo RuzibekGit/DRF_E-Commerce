@@ -5,7 +5,8 @@ from users.views import (SignUpCreateAPIView,
                          LogOutView,
                          ResendVerifyCodeAPIView,
                          ForgetPasswordView,
-                         UserUpdateAPIView)
+                         UserUpdateAPIView,
+                         PasswordUpdateAPIView)
 
 
 app_name = 'users'
@@ -18,7 +19,6 @@ urlpatterns = [
     path('verify/resend/', ResendVerifyCodeAPIView.as_view(), name='verify-resend'),
     path('forget/password/', ForgetPasswordView.as_view(), name='forget-password'),
     path('update/', UserUpdateAPIView.as_view(), name='update'),
-    # path('refresh/token/', RefreshTokenView.as_view(), name='refresh'),
-    # path('update/avatar/', UpdateAvatarAPIView.as_view(), name='update-avatar'),
+    path('confirm/password/', PasswordUpdateAPIView.as_view(), name='update-password'),
 
 ]
