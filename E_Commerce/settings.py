@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # local
     'users',
     'shared',
+    'products',
     
 ]
 

@@ -45,5 +45,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/users/', include('users.urls', namespace='users')),
     path('api/v1/admin/', include('admin.urls', namespace='admins')),
+    path('api/v1/products/', include('products.urls', namespace='products')),
+
 
 ]
