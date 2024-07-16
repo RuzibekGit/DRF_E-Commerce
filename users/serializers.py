@@ -25,6 +25,12 @@ def raise_error(message="Validation error!"):
     }
     raise serializers.ValidationError(detail=response)
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['uuid', 'username']
+
 # ----------------------- SignUp ------------------------------
 # region sign up
 class SignUpSerializer(serializers.ModelSerializer):

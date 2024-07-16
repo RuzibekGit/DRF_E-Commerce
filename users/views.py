@@ -17,13 +17,13 @@ from users.serializers import (SignUpSerializer,
                                UpdateUserSerializer)
 
 
-def return_error(message="Validation error!"):
+def return_error(message="Validation error!", http_request=status.HTTP_400_BAD_REQUEST):
     print("Validation error")
     response = {
         "success": False,
         "message": message
     }
-    return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    return Response(response, status=http_request)
 
 
 # -------------------------- Registration -------------------------------
