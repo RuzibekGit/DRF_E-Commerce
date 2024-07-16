@@ -257,7 +257,35 @@ class UpdateAvatarSerializer(serializers.Serializer):
 # endregion
 
 
+class UpdatePasswordSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField(write_only=True, required=True)
+    code = serializers.CharField(write_only=True, required=True)
+    class Meta:
+        model = UserModel
+        fields = ['password', 'confirm_password', 'code']
 
+    # ------------------------------
+
+    def validate(self, data):
+        password = data['password']
+        confirm_password = data.get('confirm_password')
+
+        if password != confirm_password:
+            raise_error("Passwords don't match")
+
+
+
+        data.pop('confirm_password')
+        return data
+
+    # ------------------------------
+
+    def update(self, instance, validated_data):
+        instance.password = validated_data.get('password', instance.password)
+        instance.save()
+
+        return instance
 
 
    

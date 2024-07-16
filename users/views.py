@@ -14,7 +14,8 @@ from users.serializers import (SignUpSerializer,
                                LoginSerializer,
                                LogoutSerializer,
                                ForgetPasswordSerializer, 
-                               UpdateUserSerializer)
+                               UpdateUserSerializer, 
+                               UpdatePasswordSerializer)
 
 
 def return_error(message="Validation error!", http_request=status.HTTP_400_BAD_REQUEST):
@@ -180,5 +181,24 @@ class UserUpdateAPIView(generics.UpdateAPIView):
         response = {
             "success": True,
             "message": "User updated successfully"
+        }
+        return Response(response, status=status.HTTP_202_ACCEPTED)
+
+
+
+class PasswordUpdateAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UpdatePasswordSerializer
+    http_method_names = ['put']
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        super(UserUpdateAPIView, self).update(request, *args, **kwargs)
+        response = {
+            "success": True,
+            "message": "User updated successfully",
+            "auth_status": self.request.user.auth_status
         }
         return Response(response, status=status.HTTP_202_ACCEPTED)

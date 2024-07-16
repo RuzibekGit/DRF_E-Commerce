@@ -96,7 +96,7 @@ class UserModel(AbstractUser, BaseModel):
         ConfirmationModel.objects.create(
             code=code,
             user=self, 
-            expiration_time= timezone.now() + timedelta(minutes=4)
+            expiration_time= timezone.now() + timedelta(minutes=10)
         )
         return code
     
