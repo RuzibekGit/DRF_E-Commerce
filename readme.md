@@ -2,9 +2,11 @@
 
 <p style="font-size: 20px; color: rgb(131, 130, 128);">This project has not been completed yet...</p>
 
+
 <br>
 
 # User authentication
+This repository contains the implementation of a user management system with various endpoints for user registration, verification, login, password management, and profile updates.
 
 #### users/register/
 paylaod
