@@ -135,7 +135,7 @@ class ResendVerifyCodeAPIView(APIView):
 # -------------------------- Password Forgot -------------------------------
 # region password forgot
 class ForgetPasswordView(APIView):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     serializer_class = ForgetPasswordSerializer
 
     def post(self, request, *args, **kwargs):
@@ -185,7 +185,6 @@ class UserUpdateAPIView(generics.UpdateAPIView):
         return Response(response, status=status.HTTP_202_ACCEPTED)
 
 
-
 class PasswordUpdateAPIView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UpdatePasswordSerializer
@@ -195,7 +194,6 @@ class PasswordUpdateAPIView(generics.UpdateAPIView):
         return self.request.user
 
     def update(self, request, *args, **kwargs):
-        
         user = self.request.user
         code = request.data.get('code')
 
@@ -206,16 +204,13 @@ class PasswordUpdateAPIView(generics.UpdateAPIView):
             expiration_time__gte=timezone.now()
         )
         if not verification_code.exists():
-            return return_error(message="Verification code is not valid", http_request=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({"success": False, "message": "Verification code is not valid"}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-        ConfirmationModel.objects.update(is_confirmed=True)
+        verification_code.update(is_confirmed=True)
 
-        
-        super(UserUpdateAPIView, self).update(request, *args, **kwargs)
-        response = {
+        response = super().update(request, *args, **kwargs)
+        response.data.update({
             "success": True,
-            "message": "User updated successfully",
-            "auth_status": self.request.user.auth_status
-        }
-        return Response(response, status=status.HTTP_202_ACCEPTED)
-
+            "message": "Password updated successfully",
+        })
+        return Response(response.data, status=status.HTTP_202_ACCEPTED)

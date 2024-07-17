@@ -60,13 +60,16 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ProductUpdateSerializer
     http_method_names = ['put', 'patch']
 
+    def get_queryset(self):
+        return ProductModel.objects.all()
+
     def get_object(self):
         return ProductModel.objects.get(pk=self.kwargs['pk'])
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
         custom_response = {
-            'status': True,
+            'success': True,
             'message': "Product updated successfully",
             'data': response.data
         }
@@ -80,7 +83,6 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
             'data': response.data
         }
         return Response(custom_response, status=status.HTTP_202_ACCEPTED)
-
 # endregion
 
 

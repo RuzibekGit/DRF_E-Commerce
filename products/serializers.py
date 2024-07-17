@@ -63,17 +63,7 @@ class ProductUpdateSerializer(serializers.ModelSerializer):
 
 
         validation_error = dict()
-        # -------- Price ---------
-        try:
-            attrs['price'] = float(attrs.get('price'))
-        except:
-            validation_error['price'] = f"Price is not a valid"
-        # -------- Quantity ---------
-        try:
-            attrs['quantity'] = int(attrs.get('quantity'))
-        except:
-            validation_error['quantity'] = f"Quantity is not a valid"
-
+        
         if (name := attrs.get('name')) and len(name) < 5:
             validation_error['name'] = f"Name is not a valid"
 
@@ -92,6 +82,7 @@ class ProductUpdateSerializer(serializers.ModelSerializer):
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.author = self.context['request'].user
         instance.save()
+        
         return instance
 
 # endregion
