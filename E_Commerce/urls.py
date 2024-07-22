@@ -49,5 +49,7 @@ urlpatterns = [
     path('api/v1/orders/', include('orders.urls', namespace='orders')),
     path('api/v1/cart/', include('cart.urls', namespace='cart')),
 
+    path('api/v1/scrape/', include('scraper.urls')),
+
 
 ]
